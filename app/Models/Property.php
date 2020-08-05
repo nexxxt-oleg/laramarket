@@ -43,7 +43,7 @@ class Property extends Model
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo(User::class);
     }
 
     public function edit($fields)
