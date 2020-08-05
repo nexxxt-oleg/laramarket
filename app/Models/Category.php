@@ -10,7 +10,6 @@ use Auth;
 
 class Category extends Model
 {
-    use Sluggable;
     use NodeTrait;
 
     /**
@@ -30,16 +29,14 @@ class Category extends Model
      *
      * @return array
      */
-   public function sluggable2()
+
+    public function setTitleAttribute($value)
     {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
+        return $this->attributes['title'] = Str::of($value)->slug('-');
     }
 
-   public function getPath(): string
+
+    public function getPath(): string
     {
         return '/' . Category::PARENT_LINK . '/' . $this->slug;
     }

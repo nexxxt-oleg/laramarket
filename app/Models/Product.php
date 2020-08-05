@@ -5,13 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 
 class Product extends Model implements HasMedia
 {
-    use Sluggable, HasMediaTrait;
+    use HasMediaTrait;
 
     /**
      * Список статусов
@@ -62,14 +63,12 @@ class Product extends Model implements HasMedia
      *
      * @return array
      */
-    public function sluggable2()
+
+    public function setTitleAttribute($value)
     {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
+        return $this->attributes['title'] = Str::of($value)->slug('-');
     }
+
 
     public  static function add($fields)
     {

@@ -180,7 +180,7 @@ return [
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Unisharp\Ckeditor\ServiceProvider::class,
+     //   Unisharp\Ckeditor\ServiceProvider::class,
         Darryldecode\Cart\CartServiceProvider::class,
 
         App\Providers\CartServiceProvider::class,
