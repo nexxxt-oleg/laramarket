@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 6.18.15 on 2020-05-24 18:18:56.
+ * Generated for Laravel 6.18.32 on 2020-08-05 15:14:14.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6773,7 +6773,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Unset the given channel instance.
          *
-         * @param string|null $name
+         * @param string|null $driver
          * @return \Illuminate\Log\LogManager 
          * @static 
          */ 
@@ -13062,7 +13062,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $path
          * @param \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string $file
-         * @param array $options
+         * @param mixed $options
          * @return string|false 
          * @static 
          */ 
@@ -13078,7 +13078,7 @@ namespace Illuminate\Support\Facades {
          * @param string $path
          * @param \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string $file
          * @param string $name
-         * @param array $options
+         * @param mixed $options
          * @return string|false 
          * @static 
          */ 
@@ -18324,6 +18324,18 @@ namespace Darryldecode\Cart\Facades {
  
 }
 
+namespace App\Helpers\Cart { 
+
+    /**
+     * 
+     *
+     */ 
+    class CartFunction {
+         
+    }
+ 
+}
+
 namespace DaveJamesMiller\Breadcrumbs\Facades { 
 
     /**
@@ -20094,7 +20106,7 @@ namespace  {
              * Pass the query to a given callback.
              *
              * @param callable $callback
-             * @return \Illuminate\Database\Query\Builder 
+             * @return \Illuminate\Database\Eloquent\Builder 
              * @static 
              */ 
             public static function tap($callback)
@@ -20409,7 +20421,7 @@ namespace  {
             /**
              * Add a subselect expression to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param \Closure|$this|string $query
              * @param string $as
              * @return \Illuminate\Database\Query\Builder|static 
              * @throws \InvalidArgumentException
@@ -22229,6 +22241,8 @@ namespace  {
     class SEO extends \Artesaos\SEOTools\Facades\SEOTools {}
 
     class Cart extends \Darryldecode\Cart\Facades\CartFacade {}
+
+    class CartFunction extends \App\Helpers\Cart\CartFunction {}
 
     class Breadcrumbs extends \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs {}
 

@@ -16,7 +16,7 @@ class AddUserRole extends Migration
         Schema::table('users', function (Blueprint $table) {
              $table->string('role', 16)->default('user');
              $table->tinyInteger('is_partner')->default(0);
-             $table->integer('personal_account')->default(0);
+             $table->decimal('personal_account' , 6, 2)->default(0);
         });
     }
 

@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/','FrontController@index')->name('front_index');
 Route::get('catalog/{path}', 'FrontController@catalog')
     ->where('path', '[a-zA-Z0-9/_-]+')->name('front_catalog');
@@ -39,6 +40,8 @@ Route::get('/register/{referral}', 'Auth\RegisterController@showRegistrationForm
 /**
  * Оформление заказа
  */
+
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/checkout', 'CheckoutController@getCheckout')->name('checkout');
     Route::post('/checkout/order/', 'CheckoutController@placeOrder')->name('placeOrder');
@@ -85,6 +88,11 @@ Route::group(
         Route::get('/history_orders', 'UserController@historyOrder')->name('user_history_order');
         Route::get('/list_cashback', 'UserController@userCashback')->name('user_list_cashback');
         Route::get('/user_pay', 'UserController@userPay')->name('user_pay');
+
+        Route::prefix('payment')->group(function () {
+            Route::post('/visa' , 'QiwiController@pay')->name('qiwi.pay');
+            Route::post('/callback/deposit/{orderPay}' , 'QiwiController@callback')->name('qiwi.callback');
+        });
 
         //Route::get('summernote',array('as'=>'summernote.get','uses'=>'FileController@getSummernote'));
         //Route::post('ckeditor/image_upload','CKEditorController@upload')->name('upload');

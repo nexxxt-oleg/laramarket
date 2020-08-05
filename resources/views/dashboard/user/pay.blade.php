@@ -2,6 +2,10 @@
 
 @section('content')
 
+    @push('styles')
+        <link href="{{ asset('css/common.css') }}" rel="stylesheet">
+    @endpush
+
     <div class="lcPageContentTitle">
         Пополнение / Снятие
     </div>
@@ -40,13 +44,13 @@
         </div>
         <div class="lcPageContentPayMiddle">
             <div class="lcPageContentPayMiddle__item lcPageContentPayMiddle__item-active">
-                <div class="lcPageContentPayMiddle__check">
+                <div class="lcPageContentPayMiddle__check ">
                                         <span>
 
                                         </span>
                     <input name="choose" type="radio">
                 </div>
-                <div class="lcPageContentPayMiddle__inf">
+                <div class="lcPageContentPayMiddle__inf" data-modal="#modal3">
                     Банковские карты
                     <span>
                                             Комиссия 20%
@@ -264,7 +268,7 @@
                                 xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink"
                                 width="12px" height="6px">
-                            <path fill-rule="evenodd"  fill="rgb(153, 153, 153)"
+                            <path fill-rule="evenodd" fill="rgb(153, 153, 153)"
                                   d="M-0.000,-0.000 L12.000,-0.000 L6.000,6.000 L-0.000,-0.000 Z"/>
                         </svg>
                         <div class="catalogSort__drop">
@@ -286,7 +290,7 @@
                                 xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink"
                                 width="12px" height="6px">
-                            <path fill-rule="evenodd"  fill="rgb(153, 153, 153)"
+                            <path fill-rule="evenodd" fill="rgb(153, 153, 153)"
                                   d="M-0.000,-0.000 L12.000,-0.000 L6.000,6.000 L-0.000,-0.000 Z"/>
                         </svg>
                         <div class="catalogSort__drop">
@@ -501,5 +505,110 @@
             </div>
         </div>
     </div>
+
+
+
+    <form id="cardform" name="cardform"  action="{{ route('qiwi.pay') }}" method="POST"  class="cartBlock cartAddress">
+        <input type="text" class="input-card-full"  name="card" id="card"  placeholder="Карта">
+        <input type="text" class="input-card-full"  name="month" id="month" placeholder="Месяц" maxlength="2">
+        <input type="text" class="input-card-full" placeholder="Год" maxlength="2" name="year" id="year">
+        <input type="text" class="input-card-full"  placeholder="Защитный код" maxlength="3" name="cvv" id="cvv">
+        <input type="text" class="input-card-full"  placeholder="Сумма ввода" name="amount" id="amount">
+        <button class="btn lcPageMenu__btn form-submit " id="pay_button">Пополнить</button>
+    </form>
+
+    <div class="mt-20 text-danger text-sm error-div" style="display: none">Исправьте ошибки, выделенные красной рамкой:</div>
+
+    @push('scripts')
+        <script>
+            var cc = cardform.card;
+            var month = cardform.month;
+            var year = cardform.year;
+            var cvv = cardform.cvv;
+
+            for (var i in ['input', 'change', 'blur', 'keyup']) {
+                cc.addEventListener('input', formatCardCode, false);
+                month.addEventListener('input', formatMonth, false);
+                year.addEventListener('input', formatYear, false);
+                cvv.addEventListener('input', formatCvv, false);
+            }
+            function formatCardCode() {
+                var cardCode = this.value.replace(/[^\d]/g, '').substring(0,18);
+                cardCode = cardCode != '' ? cardCode.match(/.{1,4}/g).join(' ') : '';
+                this.value = cardCode;
+            }
+
+            function formatMonth() {
+                var month = this.value.replace(/[^\d]/g, '').substring(0,2);
+                month = month != '' ? month.match(/.{1,2}/g) : '';
+                this.value = month;
+            }
+
+            function formatYear() {
+                var year = this.value.replace(/[^\d]/g, '').substring(0,2);
+                year = year != '' ? year.match(/.{1,2}/g) : '';
+                this.value = year;
+            }
+            function formatCvv() {
+                var cvv = this.value.replace(/[^\d]/g, '').substring(0,3);
+                cvv = cvv != '' ? cvv.match(/.{1,3}/g) : '';
+                this.value = cvv;
+            }
+
+
+            $('form[id="cardform"]').validate({
+                //wrapper: 'div',
+                errorElement: "div",
+                errorElementClass: "error",
+                errorLabelContainer: '.error-div',
+
+                //errorClass: "error",
+                errorPlacement: function(error, element) {
+                    //error.insertAfter($('.credit-cards'));
+                    // var placement = $(element).data('error');
+                    // if (placement) {
+                    //     $(placement).append(error)
+                    // } else {
+                    //     error.insertAfter(element);
+                    // }
+                },
+
+
+                rules: {
+                    card: {
+                        required: true,
+                        creditcard: true
+                    },
+                    month: {
+                        required: true,
+                        number: true,
+                        max: 12
+                    },
+                    year: {
+                        required: true,
+                        number: true,
+                        min: 19,
+                        max: 30
+                    },
+                    cvv: {
+                        required: true,
+                        number: true,
+                        maxlength: 3
+                    }
+                },
+                messages: {
+                    card: '- Номер карты указан неправильно',
+                    month: '- Месяц указан неправильно',
+                    year: '- Год указан неправильно',
+                    cvv: '- CVV-код указан неправильно'
+                },
+                submitHandler: function(form) {
+                    $("#pay_button").after('<img id="loader" src="img/spinner.gif">');
+                    $("#pay_button").remove();
+                    form.submit();
+                }
+            });
+        </script>
+    @endpush
 
 @endsection

@@ -15,6 +15,7 @@
         "darryldecode/cart": "~4.0",
         "davejamesmiller/laravel-breadcrumbs": "5.x",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^7.0",
         "kalnoy/nestedset": "^5.0",
         "laravel-admin-ext/summernote": "^1.0",
         "laravel/framework": "^6.2",

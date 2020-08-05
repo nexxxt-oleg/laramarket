@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\SessionCookieJar;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -30,5 +32,12 @@ class AppServiceProvider extends ServiceProvider
          );
 
         Schema::defaultStringLength(191);
+
+        $this->app->bind('GuzzleHttp\Client', function () {
+            $cookieJar = new SessionCookieJar('SESSION_STORAGE', true);
+            return new Client([
+                'cookies' => $cookieJar,
+            ]);
+        });
     }
 }
