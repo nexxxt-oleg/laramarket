@@ -509,22 +509,31 @@
 
 
     <form id="cardform" name="cardform"  action="{{ route('qiwi.pay') }}" method="POST"  class="cartBlock cartAddress">
-        <input type="text" class="input-card-full"  name="card" id="card"  placeholder="Карта">
+        <input type="text" class="input-card-full"  name="card" id="card"  placeholder="2222 2222 2222 2222">
         <input type="text" class="input-card-full"  name="month" id="month" placeholder="Месяц" maxlength="2">
         <input type="text" class="input-card-full" placeholder="Год" maxlength="2" name="year" id="year">
         <input type="text" class="input-card-full"  placeholder="Защитный код" maxlength="3" name="cvv" id="cvv">
         <input type="text" class="input-card-full"  placeholder="Сумма ввода" name="amount" id="amount">
         <button class="btn lcPageMenu__btn form-submit " id="pay_button">Пополнить</button>
+
+        <div class="mt-20 text-danger text-sm error-div" style="display: none">
+            <span>Исправьте ошибки, выделенные красной рамкой:</span>
+        </div>
     </form>
 
-    <div class="mt-20 text-danger text-sm error-div" style="display: none">Исправьте ошибки, выделенные красной рамкой:</div>
 
     @push('scripts')
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+
         <script>
             var cc = cardform.card;
             var month = cardform.month;
             var year = cardform.year;
             var cvv = cardform.cvv;
+            var amount = cardform.amount;
 
             for (var i in ['input', 'change', 'blur', 'keyup']) {
                 cc.addEventListener('input', formatCardCode, false);
@@ -594,13 +603,18 @@
                         required: true,
                         number: true,
                         maxlength: 3
+                    },
+                    amount: {
+                        required: true,
+                        number: true,
                     }
                 },
                 messages: {
                     card: '- Номер карты указан неправильно',
                     month: '- Месяц указан неправильно',
                     year: '- Год указан неправильно',
-                    cvv: '- CVV-код указан неправильно'
+                    cvv: '- CVV-код указан неправильно',
+                    amount: '- Сумма не указана'
                 },
                 submitHandler: function(form) {
                     $("#pay_button").after('<img id="loader" src="img/spinner.gif">');
